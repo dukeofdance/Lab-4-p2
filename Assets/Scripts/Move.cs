@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Move : MonoBehaviour
 {
+
+    public static event Action dead;
+
     private Rigidbody rb;
     private float movespeed,jumpspeed;
     private float dirX, dirZ, dirY;
@@ -40,7 +44,11 @@ public class Move : MonoBehaviour
     {
         if (collision.collider.tag == "Enemy")
         {
+            ScoreText.Instance.AddScore(1);
             Destroy(collision.collider.gameObject);
+
+            dead?.Invoke();
+
         }
         if (collision.collider.tag == "Ground")
         {
